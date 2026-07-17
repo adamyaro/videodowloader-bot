@@ -20,7 +20,9 @@ async def connect_db():
             joined_at TIMESTAMP DEFAULT NOW()
         );
     """)
-    async def add_user(telegram_id, username, first_name):
+
+
+async def add_user(telegram_id, username, first_name):
     await pool.execute(
         """
         INSERT INTO users (telegram_id, username, first_name)
