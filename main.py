@@ -65,9 +65,7 @@ async def help_button(message: Message):
         "Поддерживаются:\n"
         "• TikTok\n"
         "• YouTube\n"
-        "• Instagram\n\n"
-        "Например:\n"
-        "https://www.tiktok.com/..."
+        "• Instagram"
     )
 
 
@@ -87,12 +85,29 @@ async def handle_link(message: Message):
 
     url = match.group(0)
 
-    status = await message.answer("⏳ Скачиваю видео...")
+    status = await message.answer(
+        "🔗 Ссылка получена\n\n"
+        "🔍 Анализирую видео..."
+    )
 
     file_path = None
 
     try:
         file_path = await asyncio.to_thread(download_video, url)
+
+        await status.edit_text(
+            "🔗 Ссылка получена\n\n"
+            "📥 Видео скачано\n"
+            "🎬 Подготавливаю отправку..."
+        )
+
+        await asyncio.sleep(0.5)
+
+        await status.edit_text(
+            "🔗 Ссылка получена\n\n"
+            "📥 Видео скачано\n"
+            "📤 Отправляю в Telegram..."
+        )
 
         try:
             await message.answer_video(
@@ -105,7 +120,11 @@ async def handle_link(message: Message):
                 caption="✅ Готово!"
             )
 
-        await status.edit_text("✅ Видео успешно скачано!")
+        await status.edit_text(
+            "🎉 Готово!\n\n"
+            "✅ Видео успешно отправлено.\n\n"
+            "❤️ Спасибо, что пользуетесь Save Media!"
+        )
 
     except Exception:
         await status.edit_text(
