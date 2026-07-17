@@ -48,6 +48,14 @@ async def start(message: Message):
 
 @dp.message(F.text == "ℹ️ Помощь")
 async def help_button(message: Message):
+    @dp.message(F.text == "/stats")
+async def stats(message: Message):
+    users = await get_stats()
+
+    await message.answer(
+        f"📊 Статистика\n\n"
+        f"👥 Пользователей: {users}"
+    )
     await message.answer(
         "📌 Просто отправьте ссылку на видео.\n\n"
         "Поддерживаются:\n"
@@ -112,6 +120,8 @@ async def handle_link(message: Message):
 async def main():
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN не найден")
+
+    await connect_db()
 
     bot = Bot(token=BOT_TOKEN)
 
