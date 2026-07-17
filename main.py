@@ -75,8 +75,7 @@ async def help_button(message: Message):
         "• YouTube\n"
         "• Instagram"
     )
-
-
+    
 @dp.message(F.text)
 async def handle_link(message: Message):
     text = message.text.strip()
@@ -126,9 +125,7 @@ async def handle_link(message: Message):
             "🔗 Ссылка получена\n\n"
             "📥 Видео скачано\n"
             "📤 Отправляю в Telegram..."
-        )
-
-        try:
+        )        try:
             await message.answer_video(
                 FSInputFile(file_path),
                 caption="✅ Готово!"
@@ -139,11 +136,11 @@ async def handle_link(message: Message):
                 caption="✅ Готово!"
             )
 
-                await status.edit_text(
-            "🎉 Готово!\n\n"
-            "✅ Видео успешно отправлено.\n\n"
-            "❤️ Спасибо, что пользуетесь Save Media!"
-        )
+        await status.edit_text(
+            "
+                 await status.edit_text(
+            ...
+        )        try:
 
     except Exception as e:
         print(e)
@@ -157,12 +154,7 @@ async def handle_link(message: Message):
             try:
                 os.remove(file_path)
             except Exception:
-                pass
-
-
-
-
-async def main():
+                passasync def main():
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN не найден")
 
