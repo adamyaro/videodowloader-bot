@@ -3,7 +3,7 @@ import os
 import re
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 from aiogram.types import (
     Message,
     FSInputFile,
@@ -13,6 +13,7 @@ from aiogram.types import (
 
 from downloader import download_video
 from database import connect_db, add_user, get_stats
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 dp = Dispatcher()
@@ -30,11 +31,12 @@ URL_RE = re.compile(r"https?://\S+", re.I)
 
 @dp.message(CommandStart())
 async def start(message: Message):
-        await add_user(
+    await add_user(
         message.from_user.id,
         message.from_user.username,
         message.from_user.first_name,
     )
+
     await message.answer(
         "👋 Добро пожаловать в Save Media!\n\n"
         "📥 Отправьте ссылку на видео с:\n\n"
@@ -46,9 +48,7 @@ async def start(message: Message):
     )
 
 
-@dp.message(F.text == "ℹ️ Помощь")
-async def help_button(message: Message):
-    @dp.message(F.text == "/stats")
+@dp.message(Command("stats"))
 async def stats(message: Message):
     users = await get_stats()
 
@@ -56,6 +56,10 @@ async def stats(message: Message):
         f"📊 Статистика\n\n"
         f"👥 Пользователей: {users}"
     )
+
+
+@dp.message(F.text == "ℹ️ Помощь")
+async def help_button(message: Message):
     await message.answer(
         "📌 Просто отправьте ссылку на видео.\n\n"
         "Поддерживаются:\n"
@@ -113,7 +117,7 @@ async def handle_link(message: Message):
         if file_path and os.path.exists(file_path):
             try:
                 os.remove(file_path)
-            except:
+            except Exception:
                 pass
 
 
