@@ -20,3 +20,22 @@ async def connect_db():
             joined_at TIMESTAMP DEFAULT NOW()
         );
     """)
+    async def add_user(telegram_id, username, first_name):
+    await pool.execute(
+        """
+        INSERT INTO users (telegram_id, username, first_name)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (telegram_id) DO NOTHING;
+        """,
+        telegram_id,
+        username,
+        first_name,
+    )
+
+
+async def get_stats():
+    users = await pool.fetchval(
+        "SELECT COUNT(*) FROM users;"
+    )
+
+    return users
