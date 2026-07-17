@@ -111,7 +111,9 @@ async def handle_link(message: Message):
 
     try:
         file_path = await asyncio.to_thread(download_video, url)
-await add_download(platform)
+
+        await add_download(platform)
+
         await status.edit_text(
             "🔗 Ссылка получена\n\n"
             "📥 Видео скачано\n"
