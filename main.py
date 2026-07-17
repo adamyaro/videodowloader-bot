@@ -145,17 +145,19 @@ async def handle_link(message: Message):
             "❤️ Спасибо, что пользуетесь Save Media!"
         )
 
-    except Exception as e:
-    print(e)
+        except Exception as e:
+            print(e)
 
-    await status.edit_text(
-        f"❌ Ошибка:\n\n{e}"
-    )
+            await status.edit_text(
+            f"❌ Ошибка:\n\n{e}"
+        )
 
     finally:
         if file_path and os.path.exists(file_path):
             try:
                 os.remove(file_path)
+            except Exception:
+                pass
 
 
 
