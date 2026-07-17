@@ -155,7 +155,7 @@ async def handle_link(message: Message):
         if file_path and os.path.exists(file_path):
             try:
                 os.remove(file_path)
-             except Exception as e:
+except Exception as e:
     print(e)
 
     await status.edit_text(
