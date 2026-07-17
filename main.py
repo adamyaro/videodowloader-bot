@@ -30,6 +30,11 @@ URL_RE = re.compile(r"https?://\S+", re.I)
 
 @dp.message(CommandStart())
 async def start(message: Message):
+        await add_user(
+        message.from_user.id,
+        message.from_user.username,
+        message.from_user.first_name,
+    )
     await message.answer(
         "👋 Добро пожаловать в Save Media!\n\n"
         "📥 Отправьте ссылку на видео с:\n\n"
