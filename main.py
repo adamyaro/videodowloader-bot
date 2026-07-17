@@ -12,7 +12,12 @@ from aiogram.types import (
 )
 
 from downloader import download_video
-from database import connect_db, add_user, get_stats
+from database import (
+    connect_db,
+    add_user,
+    add_download,
+    get_stats,
+)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
@@ -30,23 +35,18 @@ URL_RE = re.compile(r"https?://\S+", re.I)
 
 
 @dp.message(CommandStart())
-async def start(message: Message):
-    await add_user(
-        message.from_user.id,
-        message.from_user.username,
-        message.from_user.first_name,
-    )
+@dp.message(F.text == "/stats")
+async def stats(message: Message):
+    stats = await get_stats()
 
     await message.answer(
-        "👋 Добро пожаловать в Save Media!\n\n"
-        "📥 Отправьте ссылку на видео с:\n\n"
-        "• TikTok\n"
-        "• YouTube\n"
-        "• Instagram\n\n"
-        "Я автоматически скачаю видео и отправлю его вам.",
-        reply_markup=keyboard,
+        f"📊 Статистика\n\n"
+        f"👥 Пользователей: {stats['users']}\n"
+        f"📥 Всего скачиваний: {stats['total']}\n\n"
+        f"🎬 TikTok: {stats['tiktok']}\n"
+        f"▶️ YouTube: {stats['youtube']}\n"
+        f"📸 Instagram: {stats['instagram']}"
     )
-
 
 @dp.message(Command("stats"))
 async def stats(message: Message):
@@ -84,7 +84,16 @@ async def handle_link(message: Message):
         return
 
     url = match.group(0)
+platform = "Другое"
 
+if "tiktok" in url.lower():
+    platform = "TikTok"
+
+elif "youtu" in url.lower():
+    platform = "YouTube"
+
+elif "instagram" in url.lower():
+    platform = "Instagram"
     status = await message.answer(
         "🔗 Ссылка получена\n\n"
         "🔍 Анализирую видео..."
@@ -94,7 +103,7 @@ async def handle_link(message: Message):
 
     try:
         file_path = await asyncio.to_thread(download_video, url)
-
+await add_download(platform)
         await status.edit_text(
             "🔗 Ссылка получена\n\n"
             "📥 Видео скачано\n"
