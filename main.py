@@ -35,7 +35,24 @@ URL_RE = re.compile(r"https?://\S+", re.I)
 
 
 @dp.message(CommandStart())
-@dp.message(F.text == "/stats")
+async def start(message: Message):
+    await add_user(
+        message.from_user.id,
+        message.from_user.username,
+        message.from_user.first_name,
+    )
+
+    await message.answer(
+        "👋 Добро пожаловать в Save Media!\n\n"
+        "📥 Отправьте ссылку на видео:\n\n"
+        "• TikTok\n"
+        "• YouTube\n"
+        "• Instagram",
+        reply_markup=keyboard,
+    )
+
+
+@dp.message(Command("stats"))
 async def stats(message: Message):
     stats = await get_stats()
 
@@ -46,15 +63,6 @@ async def stats(message: Message):
         f"🎬 TikTok: {stats['tiktok']}\n"
         f"▶️ YouTube: {stats['youtube']}\n"
         f"📸 Instagram: {stats['instagram']}"
-    )
-
-@dp.message(Command("stats"))
-async def stats(message: Message):
-    users = await get_stats()
-
-    await message.answer(
-        f"📊 Статистика\n\n"
-        f"👥 Пользователей: {users}"
     )
 
 
@@ -84,16 +92,16 @@ async def handle_link(message: Message):
         return
 
     url = match.group(0)
-platform = "Другое"
 
-if "tiktok" in url.lower():
-    platform = "TikTok"
+    platform = "Другое"
 
-elif "youtu" in url.lower():
-    platform = "YouTube"
+    if "tiktok" in url.lower():
+        platform = "TikTok"
+    elif "youtu" in url.lower():
+        platform = "YouTube"
+    elif "instagram" in url.lower():
+        platform = "Instagram"
 
-elif "instagram" in url.lower():
-    platform = "Instagram"
     status = await message.answer(
         "🔗 Ссылка получена\n\n"
         "🔍 Анализирую видео..."
