@@ -145,22 +145,18 @@ async def handle_link(message: Message):
             "❤️ Спасибо, что пользуетесь Save Media!"
         )
 
-    except Exception:
-        await status.edit_text(
-            "❌ Не удалось скачать видео.\n\n"
-            "Проверьте ссылку и попробуйте ещё раз."
-        )
-
-    finally:
-        if file_path and os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-except Exception as e:
+    except Exception as e:
     print(e)
 
     await status.edit_text(
         f"❌ Ошибка:\n\n{e}"
     )
+
+    finally:
+        if file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+
 
 
 
