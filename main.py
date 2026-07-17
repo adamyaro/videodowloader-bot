@@ -139,16 +139,16 @@ async def handle_link(message: Message):
                 caption="✅ Готово!"
             )
 
-        await status.edit_text(
+                await status.edit_text(
             "🎉 Готово!\n\n"
             "✅ Видео успешно отправлено.\n\n"
             "❤️ Спасибо, что пользуетесь Save Media!"
         )
 
-        except Exception as e:
-            print(e)
+    except Exception as e:
+        print(e)
 
-            await status.edit_text(
+        await status.edit_text(
             f"❌ Ошибка:\n\n{e}"
         )
 
