@@ -161,7 +161,7 @@ async def handle_link(message: Message):
     await status.edit_text(
         f"❌ Ошибка:\n\n{e}"
     )
-                pass
+
 
 
 async def main():
