@@ -12,7 +12,7 @@ from aiogram.types import (
 )
 
 from downloader import download_video
-
+from database import connect_db, add_user, get_stats
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 dp = Dispatcher()
