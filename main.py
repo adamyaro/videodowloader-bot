@@ -139,9 +139,7 @@ async def handle_link(message: Message):
             )
 
         await status.edit_text(
-            "
-                 await status.edit_text(
-            ...
+            
         )
 
         try:
