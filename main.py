@@ -125,7 +125,9 @@ async def handle_link(message: Message):
             "🔗 Ссылка получена\n\n"
             "📥 Видео скачано\n"
             "📤 Отправляю в Telegram..."
-        )        try:
+        )
+
+        try:
             await message.answer_video(
                 FSInputFile(file_path),
                 caption="✅ Готово!"
@@ -140,7 +142,9 @@ async def handle_link(message: Message):
             "
                  await status.edit_text(
             ...
-        )        try:
+        )
+
+        try:
 
     except Exception as e:
         print(e)
@@ -154,7 +158,10 @@ async def handle_link(message: Message):
             try:
                 os.remove(file_path)
             except Exception:
-                passasync def main():
+                pass
+
+
+async def main():
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN не найден")
 
